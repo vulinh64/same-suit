@@ -8,4 +8,16 @@ public record CardPile(Deque<Card> pile, PileSource pileSource) {
   public CardPile(PileSource pileSource) {
     this(new ArrayDeque<>(), pileSource);
   }
+
+  public boolean isEmptyPile() {
+    return pile.isEmpty();
+  }
+
+  public void addCard(Card card) {
+    pile.push(card);
+  }
+
+  public Card popCard() {
+    return pile.pop();
+  }
 }

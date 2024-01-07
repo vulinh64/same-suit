@@ -74,7 +74,7 @@ public class GameUtils {
       var cards = new ArrayList<Card>();
 
       for (var cardIndex = 0; cardIndex < INITIAL_NUMBER_OF_CARDS.getValue(); cardIndex++) {
-        cards.add(cardPile.pile().pop());
+        cards.add(cardPile.popCard());
       }
 
       System.out.printf("Enter player #%d's name: ", playerIndex + 1);
@@ -94,7 +94,7 @@ public class GameUtils {
 
         if (result < CARD_INDEX_LOWER_BOUND || result > CARD_INDEX_UPPER_BOUND) {
           System.out.printf(
-              "Card index to discard must be between %s and %s, please try again!%n",
+              "%nCard index to discard must be between %s and %s, please try again!%n%n",
               CARD_INDEX_LOWER_BOUND, CARD_INDEX_UPPER_BOUND);
 
           continue;
@@ -110,22 +110,25 @@ public class GameUtils {
   }
 
   public static PileSource generatePileSource(CardPile discardedPile, Scanner scanner) {
-    if (discardedPile.pile().isEmpty()) {
+    if (discardedPile.isEmptyPile()) {
       return PileSource.CARD_PILE;
     }
 
     while (true) {
       try {
+        var lowerPlusOne = CARD_PILE_SOURCE_LOWER + 1;
+        var upperPlusOne = CARD_PILE_SOURCE_UPPER + 1;
+
         System.out.printf(
             "Option: Pick up the last discard card (%s) or pick up from pile (%s): ",
-            CARD_PILE_SOURCE_LOWER, CARD_PILE_SOURCE_UPPER);
+            lowerPlusOne, upperPlusOne);
 
         var index = Integer.parseInt(scanner.nextLine()) - 1;
 
         if (index < CARD_PILE_SOURCE_LOWER || index > CARD_PILE_SOURCE_UPPER) {
           System.out.printf(
               "%nOption must either be between %s and %s, please try again%n",
-              CARD_PILE_SOURCE_LOWER + 1, CARD_PILE_SOURCE_UPPER + 1);
+              lowerPlusOne, upperPlusOne);
 
           continue;
         }

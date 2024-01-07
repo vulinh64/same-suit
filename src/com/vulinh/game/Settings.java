@@ -9,7 +9,7 @@ public enum Settings {
   CARD_INDEX_UPPER_BOUND(5),
   INITIAL_NUMBER_OF_CARDS(5),
   CARD_PILE_SOURCE_LOWER(0),
-  CARD_PILE_SOURCE_UPPER(PileSource.values().length);
+  CARD_PILE_SOURCE_UPPER(PileSource.values().length - 1);
 
   private final int value;
 
