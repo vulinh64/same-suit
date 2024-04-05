@@ -27,7 +27,7 @@ public class GameUtils {
 
     for (var rank : Rank.values()) {
       for (var suit : Suit.values()) {
-        array.add(new Card(rank, suit));
+        array.add(Card.of(rank, suit));
       }
     }
 
@@ -143,9 +143,13 @@ public class GameUtils {
   }
 
   public static boolean isWinner(Player player) {
-    var cards = player.cards();
+    var cards = player.hand();
 
-    var firstCardSuit = cards.get(0).suit();
+    if (cards.isEmpty()) {
+      throw new IllegalArgumentException("Player's hand is not supposed to be empty");
+    }
+
+    var firstCardSuit = cards.getFirst().suit();
 
     for (int cardIndex = 1; cardIndex < cards.size(); cardIndex++) {
       if (firstCardSuit != cards.get(cardIndex).suit()) {

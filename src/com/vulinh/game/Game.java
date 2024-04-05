@@ -6,6 +6,7 @@ import com.vulinh.object.Player;
 import com.vulinh.utils.GameUtils;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -20,13 +21,13 @@ public class Game {
   private final List<Player> players;
 
   public Game() {
-    discardedPile = new CardPile(PileSource.DISCARDED_PILE);
-    cardPile = new CardPile(GameUtils.generateCardPile(), PileSource.CARD_PILE);
+    discardedPile = CardPile.of(PileSource.DISCARDED_PILE);
+    cardPile = CardPile.of(GameUtils.generateCardPile(), PileSource.CARD_PILE);
     numberOfPlayers = GameUtils.generateNumberOfPlayers(SCANNER);
     players = GameUtils.generatePlayers(numberOfPlayers, cardPile, SCANNER);
   }
 
-  public Player start() {
+  public Optional<Player> start() {
     System.out.println("\nGAME ON!\n");
 
     var playerIndex = new AtomicInteger();
@@ -37,11 +38,11 @@ public class Game {
       System.out.println(currentPlayer);
 
       if (GameUtils.isWinner(currentPlayer)) {
-        return currentPlayer;
+        return Optional.of(currentPlayer);
       }
 
       if (cardPile.isEmptyPile()) {
-        return null;
+        return Optional.empty();
       }
 
       var source = GameUtils.generatePileSource(discardedPile, SCANNER);
@@ -61,7 +62,7 @@ public class Game {
       discardedPile.addCard(discarded);
 
       if (GameUtils.isWinner(currentPlayer)) {
-        return currentPlayer;
+        return Optional.of(currentPlayer);
       }
 
       System.out.printf(

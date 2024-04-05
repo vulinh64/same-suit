@@ -5,7 +5,7 @@ import com.vulinh.game.Settings;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public record Player(String name, List<Card> cards) {
+public record Player(String name, List<Card> hand) {
 
   private static final int CARD_INDEX_LOWER_BOUND = Settings.CARD_INDEX_LOWER_BOUND.getValue();
   private static final int CARD_INDEX_UPPER_BOUND = Settings.CARD_INDEX_UPPER_BOUND.getValue();
@@ -14,12 +14,10 @@ public record Player(String name, List<Card> cards) {
   public String toString() {
     var index = new AtomicInteger(1);
 
-    return "Player %s is currently holding these cards: %s%n"
+    return "Player %s's hand: %s%n"
         .formatted(
             name,
-            cards.stream()
-                .map(card -> "%s (%d)".formatted(card, index.getAndIncrement()))
-                .toList());
+            hand.stream().map(card -> "%s (%d)".formatted(card, index.getAndIncrement())).toList());
   }
 
   public Card discard(int cardIndex) {
@@ -29,7 +27,7 @@ public record Player(String name, List<Card> cards) {
               .formatted(CARD_INDEX_LOWER_BOUND, CARD_INDEX_UPPER_BOUND));
     }
 
-    var removed = cards.remove(cardIndex);
+    var removed = hand.remove(cardIndex);
 
     System.out.printf("Player %s has discarded card %s%n%n", name, removed);
 
@@ -46,7 +44,7 @@ public record Player(String name, List<Card> cards) {
 
     var drawnCard = pile.pop();
 
-    cards.add(drawnCard);
+    hand.add(drawnCard);
 
     System.out.printf(
         "Player %s has drawn card %s from %s%n%n",
